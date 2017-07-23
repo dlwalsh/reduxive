@@ -1,19 +1,27 @@
 # https://docs.npmjs.com/misc/developers#keeping-files-out-of-your-package
 
-#tests
+# source files
+src
+
+# tests
 test
 coverage
 
-#build tools
+# build tools
 .travis.yml
 .jenkins.yml
 .codeclimate.yml
 
-#linters
+# linters
 .jscsrc
 .jshintrc
 .eslintrc*
 
-#editor settings
+# editor settings
 .idea
 .editorconfig
+
+# Yarn NPM package files
+npm-shrinkwrap.json
+package-lock.json
+yarn.lock
