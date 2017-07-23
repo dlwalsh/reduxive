@@ -1,0 +1,9 @@
+{
+  "name": "reduxive",
+  "version": "0.0.0",
+  "description": "A Redux wrapper that extracts common patterns",
+  "main": "index.js",
+  "repository": "https://github.com/dlwalsh/reduxive.git",
+  "author": "David Walsh (dlwalsh@gmail.com)",
+  "license": "MIT"
+}
