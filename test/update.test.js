@@ -21,3 +21,14 @@ test('simple update', ({ deepEqual, end }) => {
   deepEqual(reducer({ a: 1 }), { a: 2 }, 'state updated correctly');
   end();
 });
+
+test('nested update', ({ deepEqual, end }) => {
+  const reducer = update({
+    a: {
+      b: x => x + 1,
+    },
+  });
+
+  deepEqual(reducer({ a: { b: 1 } }), { a: { b: 2 } }, 'deep state updated correctly');
+  end();
+});
