@@ -1,6 +1,6 @@
 {
   "extends": "airbnb-base",
   "rules": {
-    "import/extensions": "never"
+    "import/extensions": "off"
   }
 }
