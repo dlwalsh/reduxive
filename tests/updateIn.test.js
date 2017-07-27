@@ -42,3 +42,13 @@ test('functional updateIn with action', ({ deepEqual, end }) => {
   deepEqual(result, { a: { b: { c: 100 } } }, 'nested state updated correctly');
   end();
 });
+
+test('error handling', ({ throws, end }) => {
+  const errorMessage = 'updateIn: path must be a non-empty string';
+
+  throws(() => updateIn(), errorMessage, 'missing path');
+  throws(() => updateIn(''), errorMessage, 'empty string as path');
+  throws(() => updateIn(2), errorMessage, 'number as path');
+  throws(() => updateIn({}), errorMessage, 'object as path');
+  end();
+});
