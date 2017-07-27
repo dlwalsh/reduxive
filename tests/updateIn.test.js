@@ -26,3 +26,19 @@ test('doubly nested updateIn', ({ deepEqual, end }) => {
   deepEqual(result, { a: { b: { c: 2 } } }, 'nested state updated correctly');
   end();
 });
+
+test('functional updateIn', ({ deepEqual, end }) => {
+  const reducer = updateIn('a.b.c', x => x * 2);
+  const result = reducer({ a: { b: { c: 2 } } });
+
+  deepEqual(result, { a: { b: { c: 4 } } }, 'nested state updated correctly');
+  end();
+});
+
+test('functional updateIn with action', ({ deepEqual, end }) => {
+  const reducer = updateIn('a.b.c', (x, action) => action.value);
+  const result = reducer({ a: { b: { c: 1 } } }, { value: 100 });
+
+  deepEqual(result, { a: { b: { c: 100 } } }, 'nested state updated correctly');
+  end();
+});
