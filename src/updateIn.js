@@ -1,10 +1,12 @@
-import { mapValues } from 'lodash/fp';
 import update from './update.js';
 
-const mapValuesWithKey = mapValues.convert({ cap: false });
+function updateIn(path, value) {
+  const keyList = path.split('.');
+  const obj = keyList.reduceRight((memo, key) => ({
+    [key]: memo,
+  }), value);
 
-function updateIn(updates = {}) {
-  return update(updates);
+  return update(obj, value);
 }
 
 export default updateIn;
