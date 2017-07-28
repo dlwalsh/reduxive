@@ -14,7 +14,7 @@
     "build:umd": "cross-env BABEL_ENV=es NODE_ENV=development rollup -c -i src/index.js -o dist/reduxive.js",
     "build:umd:min": "cross-env BABEL_ENV=es NODE_ENV=production rollup -c -i src/index.js -o dist/reduxive.min.js",
     "build": "npm run build:commonjs && npm run build:es && npm run build:umd && npm run build:umd:min",
-    "test": "NODE_ENV=commonjs tape -r babel-register tests/**/*.js | faucet"
+    "test": "BABEL_ENV=commonjs tape -r babel-register tests/**/*.js | faucet"
   },
   "peerDependencies": {
     "redux": "^3.7.2"

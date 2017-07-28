@@ -6,7 +6,7 @@ function createReducer(defaultState, handlers) {
       ? Object.assign({}, defaultState, prevState)
       : prevState;
 
-    if (hasOwnProperty.call(handlers, action.type)) {
+    if (Object.prototype.hasOwnProperty.call(handlers, action.type)) {
       const result = handlers[action.type](state, action);
       if (isEmpty(result)) {
         return Object.assign({}, state, result);
