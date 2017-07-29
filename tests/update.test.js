@@ -37,9 +37,9 @@ test('nested update', ({ deepEqual, end }) => {
 
 test('update from action', ({ deepEqual, end }) => {
   const reducer = update({
-    a: (x, action) => action.value,
+    a: (x, val) => val,
   });
-  const result = reducer({ a: 0 }, { value: 100 });
+  const result = reducer({ a: 0 }, 100);
 
   deepEqual(result, { a: 100 }, 'state updated from action');
   end();
@@ -47,9 +47,9 @@ test('update from action', ({ deepEqual, end }) => {
 
 test('update nested object from action', ({ deepEqual, end }) => {
   const reducer = update({
-    a: (x, action) => x + action.value,
+    a: (x, val) => x + val,
     b: {
-      c: (x, action) => action.value,
+      c: (x, val) => val,
     },
   });
   const result = reducer({
@@ -57,7 +57,7 @@ test('update nested object from action', ({ deepEqual, end }) => {
     b: {
       c: 10,
     },
-  }, { value: 100 });
+  }, 100);
 
   deepEqual(result, { a: 150, b: { c: 100 } }, 'nested state updated from action');
   end();
