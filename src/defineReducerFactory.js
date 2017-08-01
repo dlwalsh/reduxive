@@ -1,11 +1,11 @@
-import { isEmpty } from 'lodash/fp';
+import { isEmpty, mapKeys } from 'lodash/fp';
 
-function defineReducerFactory(defaultState, createHandlers) {
+function defineReducerFactory(defaultState, handlerDefs) {
   return (preloadState, handlerMappings = {}) => {
     const initialState = Object.assign({}, defaultState, preloadState);
 
     return (state = initialState, action = {}) => {
-      const handlers = createHandlers(handlerMappings);
+      const handlers = mapKeys(key => handlerMappings[key], handlerDefs);
 
       if (action.type && hasOwnProperty.call(handlers, action.type)) {
         const result = handlers[action.type](state, action);

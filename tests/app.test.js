@@ -14,15 +14,15 @@ const factory = defineReducerFactory({
   name: undefined,
   goals: 0,
   behinds: 0,
-}, ({ scoreGoal = GOAL, scoreBehind = BEHIND }) => ({
-  [scoreGoal]: update({
+}, {
+  scoreGoal: update({
     goals: increment,
   }),
-  [scoreBehind]: updateIn('behinds', increment),
-}));
+  scoreBehind: updateIn('behinds', increment),
+});
 
 test('initial state', ({ deepEqual, end }) => {
-  const reducer = factory({ name: 'Adelaide' });
+  const reducer = factory({ name: 'Adelaide' }, { scoreGoal: GOAL, scoreBehind: BEHIND });
 
   deepEqual(reducer(), {
     name: 'Adelaide',
@@ -33,8 +33,8 @@ test('initial state', ({ deepEqual, end }) => {
 });
 
 test('create reducers', ({ deepEqual, end }) => {
-  const reducer1 = factory({ name: 'Adelaide' });
-  const reducer2 = factory({ name: 'West Coast' });
+  const reducer1 = factory({ name: 'Adelaide' }, { scoreGoal: GOAL, scoreBehind: BEHIND });
+  const reducer2 = factory({ name: 'West Coast' }, { scoreGoal: GOAL, scoreBehind: BEHIND });
 
   deepEqual(reducer1(undefined, { type: GOAL }), {
     name: 'Adelaide',
@@ -50,7 +50,7 @@ test('create reducers', ({ deepEqual, end }) => {
 });
 
 test('accumulating state', ({ deepEqual, end }) => {
-  const reducer = factory({ name: 'Adelaide' });
+  const reducer = factory({ name: 'Adelaide' }, { scoreGoal: GOAL, scoreBehind: BEHIND });
 
   let state;
 
@@ -72,7 +72,7 @@ test('accumulating state', ({ deepEqual, end }) => {
 });
 
 test('accumulating state with flow', ({ deepEqual, end }) => {
-  const reducer = factory({ name: 'Adelaide' });
+  const reducer = factory({ name: 'Adelaide' }, { scoreGoal: GOAL, scoreBehind: BEHIND });
   const scoreGoal = prevState => reducer(prevState, { type: GOAL });
   const scoreBehind = prevState => reducer(prevState, { type: BEHIND });
 
@@ -93,7 +93,7 @@ test('accumulating state with flow', ({ deepEqual, end }) => {
 });
 
 test('accumulating state with compose', ({ deepEqual, end }) => {
-  const reducer = factory({ name: 'Adelaide' });
+  const reducer = factory({ name: 'Adelaide' }, { scoreGoal: GOAL, scoreBehind: BEHIND });
   const scoreGoal = prevState => reducer(prevState, { type: GOAL });
   const scoreBehind = prevState => reducer(prevState, { type: BEHIND });
 
