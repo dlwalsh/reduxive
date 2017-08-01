@@ -7,22 +7,24 @@ import update from '../src/update.js';
 import updateIn from '../src/updateIn.js';
 
 const increment = x => x + 1;
+const GOAL = 'GOAL';
+const BEHIND = 'BEHIND';
 
 const factory = defineReducerFactory({
   name: undefined,
   goals: 0,
   behinds: 0,
-}, {
-  scoreGoal: update({
+}, ({ scoreGoal = GOAL, scoreBehind = BEHIND }) => ({
+  [scoreGoal]: update({
     goals: increment,
   }),
-  scoreBehind: updateIn('behinds', increment),
-});
+  [scoreBehind]: updateIn('behinds', increment),
+}));
 
-test('__getState', ({ deepEqual, end }) => {
-  const reducer1 = factory({ name: 'Adelaide' });
+test('initial state', ({ deepEqual, end }) => {
+  const reducer = factory({ name: 'Adelaide' });
 
-  deepEqual(reducer1.__getState(), { // eslint-disable-line no-underscore-dangle
+  deepEqual(reducer(), {
     name: 'Adelaide',
     goals: 0,
     behinds: 0,
@@ -34,12 +36,12 @@ test('create reducers', ({ deepEqual, end }) => {
   const reducer1 = factory({ name: 'Adelaide' });
   const reducer2 = factory({ name: 'West Coast' });
 
-  deepEqual(reducer1.scoreGoal(), {
+  deepEqual(reducer1(undefined, { type: GOAL }), {
     name: 'Adelaide',
     goals: 1,
     behinds: 0,
   }, 'goals should be 1');
-  deepEqual(reducer2.scoreBehind(), {
+  deepEqual(reducer2(undefined, { type: BEHIND }), {
     name: 'West Coast',
     goals: 0,
     behinds: 1,
@@ -52,11 +54,14 @@ test('accumulating state', ({ deepEqual, end }) => {
 
   let state;
 
-  state = reducer.scoreGoal(state);
-  state = reducer.scoreGoal(state);
-  state = reducer.scoreGoal(state);
-  state = reducer.scoreBehind(state);
-  state = reducer.scoreBehind(state);
+  const scoreGoal = prevState => reducer(prevState, { type: GOAL });
+  const scoreBehind = prevState => reducer(prevState, { type: BEHIND });
+
+  state = scoreGoal(state);
+  state = scoreGoal(state);
+  state = scoreGoal(state);
+  state = scoreBehind(state);
+  state = scoreBehind(state);
 
   deepEqual(state, {
     name: 'Adelaide',
@@ -67,7 +72,9 @@ test('accumulating state', ({ deepEqual, end }) => {
 });
 
 test('accumulating state with flow', ({ deepEqual, end }) => {
-  const { scoreGoal, scoreBehind } = factory({ name: 'Adelaide' });
+  const reducer = factory({ name: 'Adelaide' });
+  const scoreGoal = prevState => reducer(prevState, { type: GOAL });
+  const scoreBehind = prevState => reducer(prevState, { type: BEHIND });
 
   const state = flow(
     scoreGoal,
@@ -86,7 +93,9 @@ test('accumulating state with flow', ({ deepEqual, end }) => {
 });
 
 test('accumulating state with compose', ({ deepEqual, end }) => {
-  const { scoreGoal, scoreBehind } = factory({ name: 'Adelaide' });
+  const reducer = factory({ name: 'Adelaide' });
+  const scoreGoal = prevState => reducer(prevState, { type: GOAL });
+  const scoreBehind = prevState => reducer(prevState, { type: BEHIND });
 
   const state = compose(
     scoreGoal,
